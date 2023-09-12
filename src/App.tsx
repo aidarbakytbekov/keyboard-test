@@ -2,15 +2,8 @@ import { useEffect, useState } from "react";
 import "./App.css";
 
 function App() {
-  const [visible, setVisible] = useState(false);
+  const [visible] = useState(false);
   const [height, setHeight] = useState<string>('90vh');
-
-  const handleVisible = () => {
-    setVisible(true);
-  };
-  const handleHide = () => {
-    setVisible(false);
-  };
 
   // useEffect(() => {
   //     window.addEventListener("resize", handleVisible);
