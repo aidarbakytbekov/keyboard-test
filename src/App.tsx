@@ -1,34 +1,88 @@
+import { useEffect, useState } from "react";
 import "./App.css";
 
 function App() {
+  const [visible, setVisible] = useState(false);
+  const [height, setHeight] = useState<string>('90vh');
+
+  const handleVisible = () => {
+    setVisible(true);
+  };
+  const handleHide = () => {
+    setVisible(false);
+  };
+
+  // useEffect(() => {
+  //     window.addEventListener("resize", handleVisible);
+  //     window.addEventListener("orientationchange", handleVisible);
+  //     window.addEventListener("focusin", handleVisible);
+  //     window.addEventListener("focusout", handleHide);
+
+  //   return () => {
+  //       window.addEventListener("resize", handleVisible);
+  //       window.addEventListener("orientationchange", handleVisible);
+  //       window.addEventListener("focusin", handleVisible);
+  //       window.addEventListener("focusout", handleHide);
+  //   };
+  // }, []);
+
+  useEffect(() => {
+      if(window.visualViewport) {
+        const resize = () => {
+          setHeight(window.visualViewport?.height.toString() + 'px');
+        }
+        window.visualViewport?.addEventListener('resize', resize)
+        return () => {
+          window.visualViewport?.addEventListener('resize', resize)
+        }
+      }
+  }, []);
   return (
-    <div
-      style={{
-        width: "100%",
-        justifyContent: "space-between",
-        height: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        gap: "20px",
-        padding: '10px'
-      }}
-    >
-      <div>
-        <div style={{marginBottom: '10px'}}>
-          <input
-            style={{ width: "100%", padding: "8px 5px", marginBottom: "10px" }}
-            type="text"
+    <>
+      <div
+        className="container"
+        style={{
+          width: "100%",
+          justifyContent: "space-between",
+          height: `${height}`,
+          scrollSnapType: "y mandatory",
+          overflowY: "scroll",
+          display: "flex",
+          flexDirection: "column",
+          gap: "20px",
+          padding: "10px",
+        }}
+      >
+        <div>
+          <div style={{ marginBottom: "10px" }}>
+            <input
+              style={{
+                width: "100%",
+                padding: "8px 5px",
+                marginBottom: "10px",
+              }}
+              type="text"
+            />
+            <input style={{ width: "100%", padding: "8px 5px" }} type="text" />
+          </div>
+          <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
+            <input style={{ width: "100%", padding: "8px 5px" }} type="text" />
+            <input style={{ width: "100%", padding: "8px 5px" }} type="text" />
+          </div>
+          <textarea
+            style={{
+              width: "100%",
+              resize: "none",
+              height: "128px",
+              padding: "8px 5px",
+            }}
           />
-          <input style={{ width: "100%", padding: "8px 5px" }} type="text" />
+          {JSON.stringify(visible)}
+          {JSON.stringify(height)}
         </div>
-        <div style={{ display: "flex", gap: "10px", marginBottom: '10px' }}>
-          <input style={{ width: "100%", padding: "8px 5px" }} type="text" />
-          <input style={{ width: "100%", padding: "8px 5px" }} type="text" />
-        </div>
-        <textarea style={{ width: "100%", resize: 'none', height: '128px', padding: "8px 5px" }}/>
+        <button>Save</button>
       </div>
-      <button>Save</button>
-    </div>
+    </>
   );
 }
 
